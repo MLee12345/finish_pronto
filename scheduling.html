@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetItDone | Student-Athlete Evening Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & Modern Dark Palette */
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: #151c2c;
+            --bg-surface-hover: #1e293b;
+            --bg-card: #1e283d;
+            --border-color: #2e3d5a;
+            --border-highlight: #43587d;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.25);
+            
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --accent-emerald: #10b981;
+            
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-sans);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1150px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Header Bar */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-surface);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-glow);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .brand-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-setting {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .header-setting input, .header-setting select {
+            background: transparent;
+            border: none;
+            color: var(--accent-amber);
+            font-weight: 700;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .header-setting select {
+            color: var(--accent-cyan);
+        }
+
+        .header-setting select option {
+            background: var(--bg-surface);
+            color: var(--text-main);
+        }
+
+        .current-clock {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: monospace;
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* Budget Overview Banner */
+        .budget-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .budget-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .budget-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-box {
+            background: var(--bg-card);
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-subtle);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Progress Visualizer */
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .progress-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .segment-commitments { background: var(--accent-cyan); }
+        .segment-workload { background: var(--primary); }
+        .segment-free { background: var(--accent-emerald); }
+        .segment-overrun { background: var(--accent-rose); }
+
+        .progress-legend {
+            display: flex;
+            gap: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Warning Overrun Banner */
+        .overrun-alert {
+            display: none;
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid var(--accent-rose);
+            padding: 0.85rem 1.25rem;
+            border-radius: var(--radius-md);
+            color: #fecdd3;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .overrun-alert.active {
+            display: flex;
+        }
+
+        /* Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 920px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .panel-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Forms & Inputs */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.65rem 0.85rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-glow);
+        }
+
+        .dropdown-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Auto-Save Subject Dropdown */
+        .subject-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #182238;
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-md);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .subject-dropdown.open {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.65rem 0.85rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.15s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-surface-hover);
+        }
+
+        .dropdown-save-btn {
+            padding: 0.7rem 0.85rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            border-top: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.15s;
+        }
+
+        .dropdown-save-btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+        }
+
+        .dropdown-empty {
+            padding: 0.85rem;
+            font-size: 0.8rem;
+            color: var(--text-subtle);
+            text-align: center;
+        }
+
+        /* Preset Chips */
+        .preset-chips {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .chip-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip-btn:hover {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--text-main);
+            border-color: var(--primary);
+        }
+
+        /* Commitment Item List */
+        .commitment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .commitment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            padding: 0.6rem 0.85rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .commitment-time {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .btn-rose {
+            background: var(--accent-rose);
+            color: white;
+        }
+
+        .btn-rose:hover {
+            background: #e11d48;
+        }
+
+        .btn-emerald {
+            background: var(--accent-emerald);
+            color: white;
+        }
+
+        .btn-emerald:hover {
+            background: #059669;
+        }
+
+        .btn-sm {
+            padding: 0.35rem 0.65rem;
+            font-size: 0.78rem;
+        }
+
+        .btn-icon-danger {
+            background: transparent;
+            border: none;
+            color: var(--text-subtle);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0.2rem;
+            border-radius: 4px;
+        }
+
+        .btn-icon-danger:hover {
+            color: var(--accent-rose);
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Task Cards */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .task-card:hover {
+            border-color: var(--border-highlight);
+        }
+
+        .task-card.completed {
+            opacity: 0.6;
+            background: rgba(30, 40, 61, 0.5);
+        }
+
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-subtle);
+        }
+
+        .task-card.deferred {
+            border-left: 4px solid var(--accent-amber);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .task-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .task-subject-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            width: fit-content;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .urgency-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .urgency-urgent { background: rgba(244, 63, 94, 0.2); color: #fecdd3; border: 1px solid rgba(244, 63, 94, 0.4); }
+        .urgency-medium { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .urgency-normal { background: rgba(16, 185, 129, 0.2); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+        .task-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 0.6rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-subtle);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            opacity: 0.5;
+        }
+
+        /* Modals Standard */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            animation: modalSlideUp 0.25s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .focus-timer-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            font-family: monospace;
+            text-align: center;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            margin: 0.5rem 0;
+        }
+
+        .focus-task-info {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .checkin-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 480px) {
+            .checkin-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Application Header -->
+        <header class="app-header">
+            <div class="brand-section">
+                <div class="brand-icon">⚡</div>
+                <div>
+                    <h1 class="brand-title">GetItDone</h1>
+                    <p class="brand-subtitle">Student-Athlete Evening & Homework Manager</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="header-setting">
+                    <span>🌙 Target Bedtime:</span>
+                    <input type="time" id="bedtimeInput" value="23:00">
+                </div>
+                <div class="header-setting">
+                    <span>⏱️ Check-in Interval:</span>
+                    <select id="checkinIntervalSelect">
+                        <option value="15">Every 15 min</option>
+                        <option value="20" selected>Every 20 min</option>
+                        <option value="30">Every 30 min</option>
+                    </select>
+                </div>
+                <div class="current-clock" id="liveClock">00:00:00</div>
+            </div>
+        </header>
+
+        <!-- Dynamic Time Budget Banner -->
+        <section class="budget-card">
+            <div class="budget-header">
+                <div class="budget-title">
+                    <span>📊 Night Budget & Bedtime Tracker</span>
+                </div>
+                <div id="budgetStatusBadge" class="urgency-badge urgency-normal">On Track</div>
+            </div>
+
+            <div class="budget-metrics">
+                <div class="metric-box">
+                    <div class="metric-label">Time to Bedtime</div>
+                    <div class="metric-value" id="metricTimeToBed">--</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Fixed Commitments</div>
+                    <div class="metric-value" style="color: var(--accent-cyan);" id="metricFixedTime">0m</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Required Workload</div>
+                    <div class="metric-value" style="color: var(--primary);" id="metricWorkload">0m</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Available Free Buffer</div>
+                    <div class="metric-value" id="metricBuffer">0m</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Stack -->
+            <div class="progress-bar-container">
+                <div class="progress-segment segment-commitments" id="progCommitments" style="width: 0%;"></div>
+                <div class="progress-segment segment-workload" id="progWorkload" style="width: 0%;"></div>
+                <div class="progress-segment segment-free" id="progFree" style="width: 100%;"></div>
+                <div class="progress-segment segment-overrun" id="progOverrun" style="width: 0%;"></div>
+            </div>
+
+            <div class="progress-legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--accent-cyan);"></div>
+                    <span>Fixed Commitments (Dinner, Shower, etc.)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--primary);"></div>
+                    <span>Homework Workload</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--accent-emerald);"></div>
+                    <span>Buffer Before Bed</span>
+                </div>
+            </div>
+
+            <!-- Warning Alert for Bedtime Overrun -->
+            <div class="overrun-alert" id="overrunBanner">
+                <div>
+                    <strong>⚠️ Bedtime Overrun Alert:</strong> Your total workload and fixed commitments exceed your target bedtime by <span id="overrunMinsText">0</span> minutes!
+                </div>
+                <button class="btn btn-rose btn-sm" id="btnResolveOverrun">⚡ Resolve Schedule Overrun</button>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid -->
+        <main class="main-grid">
+            <!-- Left Sidebar Controls -->
+            <div class="panel">
+                <!-- Fixed Time Commitments -->
+                <div class="panel-title">
+                    <span>🍽️ Fixed Commitments</span>
+                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-cyan);" id="totalCommitmentBadge">0 mins total</span>
+                </div>
+
+                <form id="commitmentForm" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="commitTitle">Activity Name</label>
+                        <input type="text" id="commitTitle" class="input-field" placeholder="e.g. Dinner with family, Shower" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="commitMinutes">Duration (minutes)</label>
+                        <input type="number" id="commitMinutes" class="input-field" placeholder="30" min="5" max="300" required>
+                    </div>
+
+                    <div class="preset-chips">
+                        <button type="button" class="chip-btn" onclick="addQuickCommit('Dinner', 45)">+ Dinner (45m)</button>
+                        <button type="button" class="chip-btn" onclick="addQuickCommit('Shower & Wind Down', 20)">+ Shower (20m)</button>
+                        <button type="button" class="chip-btn" onclick="addQuickCommit('Team Workout Prep', 30)">+ Practice (30m)</button>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary" style="margin-top: 0.25rem;">+ Add Fixed Commitment</button>
+                </form>
+
+                <div class="commitment-list" id="commitmentList">
+                    <!-- Rendered commitments -->
+                </div>
+
+                <!-- Add Homework Task Form -->
+                <div class="panel-title" style="margin-top: 0.5rem;">
+                    <span>📚 Add Homework Task</span>
+                </div>
+
+                <form id="taskForm" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="taskSubject">Class / Subject</label>
+                        <div class="dropdown-wrapper">
+                            <input type="text" id="taskSubject" class="input-field" placeholder="Type or select class..." autocomplete="off" required>
+                            <div id="subjectDropdown" class="subject-dropdown"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="taskName">Task Description</label>
+                        <input type="text" id="taskName" class="input-field" placeholder="e.g. Read Ch 4 & Answer #1-10" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="taskDuration">Est. Time (mins)</label>
+                            <input type="number" id="taskDuration" class="input-field" placeholder="45" min="5" max="360" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="taskDue">Due Date & Time</label>
+                            <input type="datetime-local" id="taskDue" class="input-field" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 0.25rem;">+ Add Homework Task</button>
+                </form>
+            </div>
+
+            <!-- Right Workspace: Task Queue & Active Focus -->
+            <div class="panel">
+                <div class="panel-title">
+                    <span>🔥 Urgent Task Queue</span>
+                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);" id="taskCountBadge">0 tasks</span>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="setTaskFilter('all', this)">All Tasks</button>
+                    <button class="tab-btn" onclick="setTaskFilter('pending', this)">Pending</button>
+                    <button class="tab-btn" onclick="setTaskFilter('completed', this)">Completed</button>
+                    <button class="tab-btn" onclick="setTaskFilter('deferred', this)">Pushed / Deferred</button>
+                </div>
+
+                <div class="task-list" id="taskList">
+                    <!-- Dynamic task cards -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ACTIVE FOCUS SESSION MODAL -->
+    <div class="modal-overlay" id="focusModal">
+        <div class="modal-card">
+            <div class="modal-title">
+                <span style="color: var(--accent-cyan);">⚡ Active Focus Session</span>
+            </div>
+
+            <div class="focus-task-info">
+                <div class="task-subject-badge" id="focusSubjectBadge" style="margin: 0 auto 0.4rem auto;">Subject</div>
+                <h3 id="focusTaskTitle" style="font-size: 1.2rem; color: var(--text-main);">Task Title</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;" id="focusTargetFinish">Est. Finish: --</p>
+            </div>
+
+            <div class="focus-timer-display" id="focusTimerDisplay">00:00</div>
+
+            <div style="text-align: center; font-size: 0.85rem; color: var(--accent-amber);" id="focusCheckinCountdown">
+                ⏱️ Next interactive check-in in 20:00
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                <button class="btn btn-emerald" style="flex: 1;" onclick="completeFocusTask()">✓ Finished Task</button>
+                <button class="btn btn-secondary" onclick="togglePauseFocus()" id="btnPauseFocus">⏸ Pause</button>
+                <button class="btn btn-rose" onclick="closeFocusSession()">❌ Exit Focus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE CHECK-IN MODAL -->
+    <div class="modal-overlay" id="checkinModal">
+        <div class="modal-card">
+            <div class="modal-title">
+                <span style="color: var(--accent-amber);">🔔 Check-In Prompt</span>
+            </div>
+
+            <p style="font-size: 0.95rem; color: var(--text-main); text-align: center; line-height: 1.4;">
+                Are you still working on <strong id="checkinTaskName" style="color: var(--accent-cyan);">Task Name</strong>?
+            </p>
+
+            <div class="checkin-buttons">
+                <button class="btn btn-primary" onclick="respondCheckin('working')">💪 Still Working</button>
+                <button class="btn btn-emerald" onclick="respondCheckin('finished')">🎉 Finished Task!</button>
+                <button class="btn btn-secondary" onclick="respondCheckin('snooze')">⏰ Snooze 5 Mins</button>
+                <button class="btn btn-rose" onclick="respondCheckin('defer')">📅 Push to Tomorrow</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BEDTIME OVERRUN RESOLUTION MODAL -->
+    <div class="modal-overlay" id="overrunModal">
+        <div class="modal-card">
+            <div class="modal-title">
+                <span style="color: var(--accent-rose);">⚠️ Resolve Schedule Overrun</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+                Your total estimated work + fixed commitments exceeds your 11:00 PM target bedtime. How would you like to adjust your evening schedule?
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <strong style="font-size: 0.9rem; color: var(--text-main);">Option 1: Extend Target Bedtime</strong>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(15)">+15 Mins</button>
+                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(30)">+30 Mins</button>
+                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(60)">+60 Mins</button>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <strong style="font-size: 0.9rem; color: var(--text-main);">Option 2: Push Lowest Urgency Task to Tomorrow</strong>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.3rem 0 0.5rem 0;" id="lowestUrgencyTaskText">
+                        Lowest priority task will be marked as deferred.
+                    </p>
+                    <button class="btn btn-rose btn-sm" onclick="deferLowestUrgencyTask()">📅 Push Task to Tomorrow</button>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="closeModal('overrunModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC & PERSISTENCE -->
+    <script>
+        /* Global App State */
+        let appState = {
+            bedtime: "23:00",
+            checkinInterval: 20, // minutes
+            savedClasses: ["Math / AP Calc", "English Lit", "AP Physics", "US History", "Spanish III"],
+            commitments: [
+                { id: "c1", title: "Dinner with Family", minutes: 45 },
+                { id: "c2", title: "Shower & Wind Down", minutes: 20 }
+            ],
+            tasks: [],
+            activeFilter: "all",
+            activeFocusTaskId: null,
+            focusTimerSeconds: 0,
+            checkinTimerSeconds: 0,
+            isTimerPaused: false,
+            timerInterval: null
+        };
+
+        /* DOM Elements */
+        const bedtimeInput = document.getElementById('bedtimeInput');
+        const checkinIntervalSelect = document.getElementById('checkinIntervalSelect');
+        const liveClock = document.getElementById('liveClock');
+        const taskSubjectInput = document.getElementById('taskSubject');
+        const subjectDropdown = document.getElementById('subjectDropdown');
+        const commitmentForm = document.getElementById('commitmentForm');
+        const commitmentList = document.getElementById('commitmentList');
+        const taskForm = document.getElementById('taskForm');
+        const taskList = document.getElementById('taskList');
+        const taskDueInput = document.getElementById('taskDue');
+
+        // Banner elements
+        const metricTimeToBed = document.getElementById('metricTimeToBed');
+        const metricFixedTime = document.getElementById('metricFixedTime');
+        const metricWorkload = document.getElementById('metricWorkload');
+        const metricBuffer = document.getElementById('metricBuffer');
+        const budgetStatusBadge = document.getElementById('budgetStatusBadge');
+        const progCommitments = document.getElementById('progCommitments');
+        const progWorkload = document.getElementById('progWorkload');
+        const progFree = document.getElementById('progFree');
+        const progOverrun = document.getElementById('progOverrun');
+        const overrunBanner = document.getElementById('overrunBanner');
+        const overrunMinsText = document.getElementById('overrunMinsText');
+        const btnResolveOverrun = document.getElementById('btnResolveOverrun');
+
+        /* Initialize App on Load */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLocalStorage();
+            setDefaultDueDate();
+            setupEventListeners();
+            startLiveClock();
+            renderAll();
+        });
+
+        /* Load from LocalStorage */
+        function loadLocalStorage() {
+            const saved = localStorage.getItem('getitdone_state');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                } catch (e) {
+                    console.error("Failed to parse local storage", e);
+                }
+            } else {
+                // Initial sample tasks
+                const todayStr = new Date().toISOString().split('T')[0];
+                appState.tasks = [
+                    {
+                        id: 't1',
+                        subject: 'Math / AP Calc',
+                        name: 'Problem Set #8 (Derivatives)',
+                        duration: 45,
+                        due: `${todayStr}T21:30`,
+                        status: 'pending'
+                    },
+                    {
+                        id: 't2',
+                        subject: 'AP Physics',
+                        name: 'Lab Report Analysis & Graphs',
+                        duration: 60,
+                        due: `${todayStr}T22:00`,
+                        status: 'pending'
+                    }
+                ];
+                saveLocalStorage();
+            }
+
+            // Sync UI Inputs
+            bedtimeInput.value = appState.bedtime || "23:00";
+            checkinIntervalSelect.value = appState.checkinInterval || 20;
+        }
+
+        function saveLocalStorage() {
+            localStorage.setItem('getitdone_state', JSON.stringify({
+                bedtime: appState.bedtime,
+                checkinInterval: appState.checkinInterval,
+                savedClasses: appState.savedClasses,
+                commitments: appState.commitments,
+                tasks: appState.tasks
+            }));
+        }
+
+        /* Set Default Due Date (Today at 10 PM) */
+        function setDefaultDueDate() {
+            const now = new Date();
+            now.setHours(22, 0, 0, 0);
+            const iso = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+            taskDueInput.value = iso;
+        }
+
+        /* Live Clock Display */
+        function startLiveClock() {
+            function updateClock() {
+                const now = new Date();
+                liveClock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                calculateTimeBudget();
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        /* Setup Main Event Listeners */
+        function setupEventListeners() {
+            // Bedtime and Check-in Interval changes
+            bedtimeInput.addEventListener('change', (e) => {
+                appState.bedtime = e.target.value;
+                saveLocalStorage();
+                renderAll();
+            });
+
+            checkinIntervalSelect.addEventListener('change', (e) => {
+                appState.checkinInterval = parseInt(e.target.value);
+                saveLocalStorage();
+            });
+
+            // Dynamic Subject Auto-Save Dropdown listeners
+            taskSubjectInput.addEventListener('focus', renderSubjectDropdown);
+            taskSubjectInput.addEventListener('input', renderSubjectDropdown);
+            
+            document.addEventListener('click', (e) => {
+                if (!taskSubjectInput.contains(e.target) && !subjectDropdown.contains(e.target)) {
+                    subjectDropdown.classList.remove('open');
+                }
+            });
+
+            // Add Fixed Commitment
+            commitmentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('commitTitle').value.trim();
+                const minutes = parseInt(document.getElementById('commitMinutes').value);
+                if (title && minutes > 0) {
+                    appState.commitments.push({
+                        id: 'c_' + Date.now(),
+                        title,
+                        minutes
+                    });
+                    document.getElementById('commitTitle').value = '';
+                    document.getElementById('commitMinutes').value = '';
+                    saveLocalStorage();
+                    renderAll();
+                }
+            });
+
+            // Add Homework Task
+            taskForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const subject = taskSubjectInput.value.trim();
+                const name = document.getElementById('taskName').value.trim();
+                const duration = parseInt(document.getElementById('taskDuration').value);
+                const due = taskDueInput.value;
+
+                if (subject && name && duration > 0 && due) {
+                    // Auto save class if not saved yet
+                    if (!appState.savedClasses.some(c => c.toLowerCase() === subject.toLowerCase())) {
+                        appState.savedClasses.push(subject);
+                    }
+
+                    appState.tasks.push({
+                        id: 't_' + Date.now(),
+                        subject,
+                        name,
+                        duration,
+                        due,
+                        status: 'pending'
+                    });
+
+                    document.getElementById('taskName').value = '';
+                    document.getElementById('taskDuration').value = '';
+                    subjectDropdown.classList.remove('open');
+
+                    saveLocalStorage();
+                    renderAll();
+                }
+            });
+
+            btnResolveOverrun.addEventListener('click', () => {
+                openModal('overrunModal');
+            });
+        }
+
+        /* Render Subject Dropdown with + Save Button */
+        function renderSubjectDropdown() {
+            const inputVal = taskSubjectInput.value.trim();
+            const filter = inputVal.toLowerCase();
+            
+            let html = '';
+            const matches = appState.savedClasses.filter(c => c.toLowerCase().includes(filter));
+
+            if (matches.length > 0) {
+                matches.forEach(cls => {
+                    html += `
+                        <div class="dropdown-item" onclick="selectSubjectClass('${escapeHtml(cls)}')">
+                            <span>📚 ${escapeHtml(cls)}</span>
+                            <button type="button" class="btn-icon-danger" onclick="deleteSavedClass(event, '${escapeHtml(cls)}')">×</button>
+                        </div>`;
+                });
+            }
+
+            // At the bottom of the dropdown list, include option: + Save "<current typed class name>"
+            if (inputVal && !appState.savedClasses.some(c => c.toLowerCase() === filter)) {
+                html += `
+                    <div class="dropdown-save-btn" onclick="saveAndSelectClass('${escapeHtml(inputVal)}')">
+                        ➕ Save "${escapeHtml(inputVal)}"
+                    </div>`;
+            } else if (!inputVal && matches.length === 0) {
+                html += `<div class="dropdown-empty">Type a class name to save it</div>`;
+            }
+
+            subjectDropdown.innerHTML = html;
+            subjectDropdown.classList.add('open');
+        }
+
+        function selectSubjectClass(cls) {
+            taskSubjectInput.value = cls;
+            subjectDropdown.classList.remove('open');
+        }
+
+        function saveAndSelectClass(cls) {
+            if (!appState.savedClasses.includes(cls)) {
+                appState.savedClasses.push(cls);
+                saveLocalStorage();
+            }
+            selectSubjectClass(cls);
+        }
+
+        function deleteSavedClass(event, cls) {
+            event.stopPropagation();
+            appState.savedClasses = appState.savedClasses.filter(c => c !== cls);
+            saveLocalStorage();
+            renderSubjectDropdown();
+        }
+
+        /* Add Quick Presets for Fixed Commitments */
+        function addQuickCommit(title, minutes) {
+            appState.commitments.push({
+                id: 'c_' + Date.now(),
+                title,
+                minutes
+            });
+            saveLocalStorage();
+            renderAll();
+        }
+
+        function deleteCommitment(id) {
+            appState.commitments = appState.commitments.filter(c => c.id !== id);
+            saveLocalStorage();
+            renderAll();
+        }
+
+        /* Calculation & Time Budget Math */
+        function calculateTimeBudget() {
+            const now = new Date();
+            const [bedHour, bedMin] = appState.bedtime.split(':').map(Number);
+            let targetBed = new Date();
+            targetBed.setHours(bedHour, bedMin, 0, 0);
+
+            // If target bedtime is earlier in the day than now (e.g., bedtime 00:30 past midnight), add 1 day
+            if (targetBed < now && bedHour < 6) {
+                targetBed.setDate(targetBed.getDate() + 1);
+            }
+
+            const totalMinsToBed = Math.max(0, Math.floor((targetBed - now) / 60000));
+            const totalFixedMins = appState.commitments.reduce((sum, c) => sum + c.minutes, 0);
+            
+            // Required workload (sum of pending task durations)
+            const pendingTasks = appState.tasks.filter(t => t.status === 'pending');
+            const totalWorkloadMins = pendingTasks.reduce((sum, t) => sum + t.duration, 0);
+
+            const availableTime = Math.max(0, totalMinsToBed - totalFixedMins);
+            const netBuffer = availableTime - totalWorkloadMins;
+
+            // Render Metrics
+            const hoursToBed = Math.floor(totalMinsToBed / 60);
+            const minsToBed = totalMinsToBed % 60;
+            metricTimeToBed.textContent = `${hoursToBed}h ${minsToBed}m`;
+
+            metricFixedTime.textContent = `${totalFixedMins}m`;
+            metricWorkload.textContent = `${totalWorkloadMins}m`;
+
+            // Progress bar visual updates
+            const baseTotal = Math.max(totalMinsToBed, totalFixedMins + totalWorkloadMins, 1);
+            const pctCommit = Math.min(100, (totalFixedMins / baseTotal) * 100);
+            const pctWorkload = Math.min(100 - pctCommit, (totalWorkloadMins / baseTotal) * 100);
+
+            progCommitments.style.width = `${pctCommit}%`;
+            progWorkload.style.width = `${pctWorkload}%`;
+
+            if (netBuffer >= 0) {
+                const pctFree = Math.max(0, 100 - pctCommit - pctWorkload);
+                progFree.style.width = `${pctFree}%`;
+                progOverrun.style.width = '0%';
+                
+                metricBuffer.textContent = `+${netBuffer}m`;
+                metricBuffer.style.color = 'var(--accent-emerald)';
+                
+                budgetStatusBadge.textContent = 'On Track';
+                budgetStatusBadge.className = 'urgency-badge urgency-normal';
+                overrunBanner.classList.remove('active');
+            } else {
+                const overrunMins = Math.abs(netBuffer);
+                progFree.style.width = '0%';
+                progOverrun.style.width = `${Math.min(100, (overrunMins / baseTotal) * 100)}%`;
+
+                metricBuffer.textContent = `-${overrunMins}m Over`;
+                metricBuffer.style.color = 'var(--accent-rose)';
+
+                budgetStatusBadge.textContent = 'Over Bedtime';
+                budgetStatusBadge.className = 'urgency-badge urgency-urgent';
+                
+                overrunMinsText.textContent = overrunMins;
+                overrunBanner.classList.add('active');
+
+                // Update text for lowest urgency task deferral option
+                const lowestTask = getLowestUrgencyTask();
+                const lowestText = document.getElementById('lowestUrgencyTaskText');
+                if (lowestTask && lowestText) {
+                    lowestText.textContent = `Lowest urgency task: "${lowestTask.name}" (${lowestTask.duration}m).`;
+                }
+            }
+        }
+
+        /* Sorting Tasks by Urgency (Earliest Deadline First) */
+        function getSortedTasks() {
+            return [...appState.tasks].sort((a, b) => {
+                const dueA = new Date(a.due).getTime();
+                const dueB = new Date(b.due).getTime();
+                return dueA - dueB;
+            });
+        }
+
+        function getLowestUrgencyTask() {
+            const pending = appState.tasks.filter(t => t.status === 'pending');
+            if (pending.length === 0) return null;
+            // Sort descending by due date (latest deadline = lowest urgency)
+            return pending.sort((a, b) => new Date(b.due).getTime() - new Date(a.due).getTime())[0];
+        }
+
+        /* Task Filtering */
+        function setTaskFilter(filter, el) {
+            appState.activeFilter = filter;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+            renderTasks();
+        }
+
+        /* Render All Components */
+        function renderAll() {
+            renderCommitments();
+            renderTasks();
+            calculateTimeBudget();
+        }
+
+        function renderCommitments() {
+            const totalMins = appState.commitments.reduce((sum, c) => sum + c.minutes, 0);
+            document.getElementById('totalCommitmentBadge').textContent = `${totalMins} mins total`;
+
+            if (appState.commitments.length === 0) {
+                commitmentList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem;">No fixed commitments added.</p></div>`;
+                return;
+            }
+
+            commitmentList.innerHTML = appState.commitments.map(c => `
+                <div class="commitment-item">
+                    <span>${escapeHtml(c.title)}</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="commitment-time">${c.minutes}m</span>
+                        <button class="btn-icon-danger" onclick="deleteCommitment('${c.id}')" title="Delete">🗑</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTasks() {
+            const sorted = getSortedTasks();
+            let filtered = sorted;
+
+            if (appState.activeFilter === 'pending') {
+                filtered = sorted.filter(t => t.status === 'pending');
+            } else if (appState.activeFilter === 'completed') {
+                filtered = sorted.filter(t => t.status === 'completed');
+            } else if (appState.activeFilter === 'deferred') {
+                filtered = sorted.filter(t => t.status === 'deferred');
+            }
+
+            document.getElementById('taskCountBadge').textContent = `${filtered.length} tasks`;
+
+            if (filtered.length === 0) {
+                taskList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎉</div>
+                        <p style="font-weight: 600;">No homework tasks in this view!</p>
+                        <p style="font-size: 0.8rem;">Add a new task using the form on the left.</p>
+                    </div>`;
+                return;
+            }
+
+            taskList.innerHTML = filtered.map(task => {
+                const dueObj = new Date(task.due);
+                const formattedDue = dueObj.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                
+                // Urgency tag math
+                const hoursLeft = (dueObj.getTime() - new Date().getTime()) / 3600000;
+                let urgencyBadge = '<span class="urgency-badge urgency-normal">🟢 Normal</span>';
+                if (hoursLeft <= 4) {
+                    urgencyBadge = '<span class="urgency-badge urgency-urgent">🔴 Urgent</span>';
+                } else if (hoursLeft <= 12) {
+                    urgencyBadge = '<span class="urgency-badge urgency-medium">🟡 Medium</span>';
+                }
+
+                const isCompleted = task.status === 'completed';
+                const isDeferred = task.status === 'deferred';
+
+                return `
+                    <div class="task-card ${isCompleted ? 'completed' : ''} ${isDeferred ? 'deferred' : ''}">
+                        <div class="task-header">
+                            <div class="task-title-group">
+                                <span class="task-subject-badge">📚 ${escapeHtml(task.subject)}</span>
+                                <h3 class="task-title">${escapeHtml(task.name)}</h3>
+                            </div>
+                            ${urgencyBadge}
+                        </div>
+
+                        <div class="task-meta">
+                            <div class="task-meta-item">⏱️ Est: <strong>${task.duration} mins</strong></div>
+                            <div class="task-meta-item">📅 Due: <strong>${formattedDue}</strong></div>
+                            ${isDeferred ? '<div class="task-meta-item" style="color: var(--accent-amber);">Pushed to Tomorrow</div>' : ''}
+                        </div>
+
+                        <div class="task-actions">
+                            ${!isCompleted ? `
+                                <button class="btn btn-primary btn-sm" onclick="startFocusSession('${task.id}')">
+                                    ▶ I'm working on it
+                                </button>
+                                <button class="btn btn-emerald btn-sm" onclick="toggleTaskDone('${task.id}')">
+                                    ✓ Mark Done
+                                </button>
+                            ` : `
+                                <button class="btn btn-secondary btn-sm" onclick="toggleTaskDone('${task.id}')">
+                                    ↩ Mark Pending
+                                </button>
+                            `}
+                            <button class="btn-icon-danger" style="margin-left: auto;" onclick="deleteTask('${task.id}')" title="Delete Task">🗑</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* Task Action Handlers */
+        function toggleTaskDone(id) {
+            const task = appState.tasks.find(t => t.id === id);
+            if (task) {
+                task.status = task.status === 'completed' ? 'pending' : 'completed';
+                saveLocalStorage();
+                renderAll();
+            }
+        }
+
+        function deleteTask(id) {
+            appState.tasks = appState.tasks.filter(t => t.id !== id);
+            saveLocalStorage();
+            renderAll();
+        }
+
+        /* FOCUS SESSION & INTERACTIVE CHECK-INS */
+        function startFocusSession(taskId) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            appState.activeFocusTaskId = taskId;
+            appState.focusTimerSeconds = task.duration * 60;
+            appState.checkinTimerSeconds = appState.checkinInterval * 60;
+            appState.isTimerPaused = false;
+
+            document.getElementById('focusSubjectBadge').textContent = `📚 ${task.subject}`;
+            document.getElementById('focusTaskTitle').textContent = task.name;
+
+            const targetTime = new Date(Date.now() + task.duration * 60000);
+            document.getElementById('focusTargetFinish').textContent = `Est. Finish: ${targetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+            updateFocusTimerDisplay();
+            openModal('focusModal');
+
+            if (appState.timerInterval) clearInterval(appState.timerInterval);
+            appState.timerInterval = setInterval(focusTimerTick, 1000);
+        }
+
+        function focusTimerTick() {
+            if (appState.isTimerPaused) return;
+
+            if (appState.focusTimerSeconds > 0) {
+                appState.focusTimerSeconds--;
+            }
+
+            if (appState.checkinTimerSeconds > 0) {
+                appState.checkinTimerSeconds--;
+            } else {
+                // Check-in interval reached! Play audio chime & open modal
+                playChimeSound();
+                triggerCheckinPrompt();
+                appState.checkinTimerSeconds = appState.checkinInterval * 60; // reset
+            }
+
+            updateFocusTimerDisplay();
+        }
+
+        function updateFocusTimerDisplay() {
+            const m = Math.floor(appState.focusTimerSeconds / 60);
+            const s = appState.focusTimerSeconds % 60;
+            document.getElementById('focusTimerDisplay').textContent = 
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+            const cm = Math.floor(appState.checkinTimerSeconds / 60);
+            const cs = appState.checkinTimerSeconds % 60;
+            document.getElementById('focusCheckinCountdown').textContent = 
+                `⏱️ Next interactive check-in in ${String(cm).padStart(2, '0')}:${String(cs).padStart(2, '0')}`;
+        }
+
+        function togglePauseFocus() {
+            appState.isTimerPaused = !appState.isTimerPaused;
+            document.getElementById('btnPauseFocus').textContent = appState.isTimerPaused ? '▶ Resume' : '⏸ Pause';
+        }
+
+        function completeFocusTask() {
+            if (appState.activeFocusTaskId) {
+                toggleTaskDone(appState.activeFocusTaskId);
+            }
+            closeFocusSession();
+        }
+
+        function closeFocusSession() {
+            if (appState.timerInterval) clearInterval(appState.timerInterval);
+            appState.activeFocusTaskId = null;
+            closeModal('focusModal');
+            closeModal('checkinModal');
+            renderAll();
+        }
+
+        /* Check-in Trigger & Response */
+        function triggerCheckinPrompt() {
+            const task = appState.tasks.find(t => t.id === appState.activeFocusTaskId);
+            if (task) {
+                document.getElementById('checkinTaskName').textContent = task.name;
+            }
+            appState.isTimerPaused = true;
+            openModal('checkinModal');
+        }
+
+        function respondCheckin(action) {
+            closeModal('checkinModal');
+            
+            if (action === 'working') {
+                appState.isTimerPaused = false;
+                appState.checkinTimerSeconds = appState.checkinInterval * 60;
+            } else if (action === 'finished') {
+                completeFocusTask();
+            } else if (action === 'snooze') {
+                appState.isTimerPaused = false;
+                appState.checkinTimerSeconds = 5 * 60; // 5 mins snooze
+            } else if (action === 'defer') {
+                if (appState.activeFocusTaskId) {
+                    const task = appState.tasks.find(t => t.id === appState.activeFocusTaskId);
+                    if (task) task.status = 'deferred';
+                    saveLocalStorage();
+                }
+                closeFocusSession();
+            }
+        }
+
+        /* Bedtime Overrun Resolution Actions */
+        function extendBedtime(extraMins) {
+            const [h, m] = appState.bedtime.split(':').map(Number);
+            let date = new Date();
+            date.setHours(h, m + extraMins, 0, 0);
+            const newH = String(date.getHours()).padStart(2, '0');
+            const newM = String(date.getMinutes()).padStart(2, '0');
+            
+            appState.bedtime = `${newH}:${newM}`;
+            bedtimeInput.value = appState.bedtime;
+            saveLocalStorage();
+            closeModal('overrunModal');
+            renderAll();
+        }
+
+        function deferLowestUrgencyTask() {
+            const lowest = getLowestUrgencyTask();
+            if (lowest) {
+                lowest.status = 'deferred';
+                saveLocalStorage();
+                renderAll();
+            }
+            closeModal('overrunModal');
+        }
+
+        /* Web Audio API Synthesized Chime */
+        function playChimeSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.8);
+            } catch (e) {
+                console.log("Audio play context restricted", e);
+            }
+        }
+
+        /* Modal Helpers */
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+            })[m]);
+        }
+    </script>
+</body>
+</html>
