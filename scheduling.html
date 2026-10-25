@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GetItDone | Student-Athlete Evening Planner</title>
+    <title>FinishPronto | Student-Athlete Evening Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -405,30 +405,6 @@
             text-align: center;
         }
 
-        /* Preset Chips */
-        .preset-chips {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-        }
-
-        .chip-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .chip-btn:hover {
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--text-main);
-            border-color: var(--primary);
-        }
-
         /* Commitment Item List */
         .commitment-list {
             display: flex;
@@ -765,7 +741,7 @@
             <div class="brand-section">
                 <div class="brand-icon">⚡</div>
                 <div>
-                    <h1 class="brand-title">GetItDone</h1>
+                    <h1 class="brand-title">FinishPronto</h1>
                     <p class="brand-subtitle">Student-Athlete Evening & Homework Manager</p>
                 </div>
             </div>
@@ -851,38 +827,8 @@
         <main class="main-grid">
             <!-- Left Sidebar Controls -->
             <div class="panel">
-                <!-- Fixed Time Commitments -->
+                <!-- Add Homework Task Form (Positioned Above Fixed Commitments) -->
                 <div class="panel-title">
-                    <span>🍽️ Fixed Commitments</span>
-                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-cyan);" id="totalCommitmentBadge">0 mins total</span>
-                </div>
-
-                <form id="commitmentForm" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <div class="form-group">
-                        <label class="form-label" for="commitTitle">Activity Name</label>
-                        <input type="text" id="commitTitle" class="input-field" placeholder="e.g. Dinner with family, Shower" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="commitMinutes">Duration (minutes)</label>
-                        <input type="number" id="commitMinutes" class="input-field" placeholder="30" min="5" max="300" required>
-                    </div>
-
-                    <div class="preset-chips">
-                        <button type="button" class="chip-btn" onclick="addQuickCommit('Dinner', 45)">+ Dinner (45m)</button>
-                        <button type="button" class="chip-btn" onclick="addQuickCommit('Shower & Wind Down', 20)">+ Shower (20m)</button>
-                        <button type="button" class="chip-btn" onclick="addQuickCommit('Team Workout Prep', 30)">+ Practice (30m)</button>
-                    </div>
-
-                    <button type="submit" class="btn btn-secondary" style="margin-top: 0.25rem;">+ Add Fixed Commitment</button>
-                </form>
-
-                <div class="commitment-list" id="commitmentList">
-                    <!-- Rendered commitments -->
-                </div>
-
-                <!-- Add Homework Task Form -->
-                <div class="panel-title" style="margin-top: 0.5rem;">
                     <span>📚 Add Homework Task</span>
                 </div>
 
@@ -914,6 +860,30 @@
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 0.25rem;">+ Add Homework Task</button>
                 </form>
+
+                <!-- Fixed Time Commitments (Positioned Below Homework Tasks) -->
+                <div class="panel-title" style="margin-top: 1rem;">
+                    <span>🍽️ Fixed Commitments</span>
+                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-cyan);" id="totalCommitmentBadge">0 mins total</span>
+                </div>
+
+                <form id="commitmentForm" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="commitTitle">Activity Name</label>
+                        <input type="text" id="commitTitle" class="input-field" placeholder="e.g. Dinner with family, Shower" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="commitMinutes">Duration (minutes)</label>
+                        <input type="number" id="commitMinutes" class="input-field" placeholder="30" min="5" max="300" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary" style="margin-top: 0.25rem;">+ Add Fixed Commitment</button>
+                </form>
+
+                <div class="commitment-list" id="commitmentList">
+                    <!-- Rendered commitments -->
+                </div>
             </div>
 
             <!-- Right Workspace: Task Queue & Active Focus -->
@@ -1075,7 +1045,7 @@
 
         /* Load from LocalStorage */
         function loadLocalStorage() {
-            const saved = localStorage.getItem('getitdone_state');
+            const saved = localStorage.getItem('finishpronto_state') || localStorage.getItem('getitdone_state');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -1113,7 +1083,7 @@
         }
 
         function saveLocalStorage() {
-            localStorage.setItem('getitdone_state', JSON.stringify({
+            localStorage.setItem('finishpronto_state', JSON.stringify({
                 bedtime: appState.bedtime,
                 checkinInterval: appState.checkinInterval,
                 savedClasses: appState.savedClasses,
@@ -1270,17 +1240,6 @@
             appState.savedClasses = appState.savedClasses.filter(c => c !== cls);
             saveLocalStorage();
             renderSubjectDropdown();
-        }
-
-        /* Add Quick Presets for Fixed Commitments */
-        function addQuickCommit(title, minutes) {
-            appState.commitments.push({
-                id: 'c_' + Date.now(),
-                title,
-                minutes
-            });
-            saveLocalStorage();
-            renderAll();
         }
 
         function deleteCommitment(id) {
