@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinishPronto | Student-Athlete Evening Planner</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>FinishPronto | Workload Planner</title>
     <style>
-        /* CSS Reset & Modern Dark Palette */
+        /* Modern Slate/Indigo/Cyan Dark Theme Palette */
         :root {
-            --bg-base: #0b0f19;
-            --bg-surface: #151c2c;
-            --bg-surface-hover: #1e293b;
-            --bg-card: #1e283d;
-            --border-color: #2e3d5a;
-            --border-highlight: #43587d;
+            --bg-base: #0b1120;
+            --bg-surface: #152033;
+            --bg-surface-hover: #22324f;
+            --bg-card: #1e2c45;
+            --border-color: #2b3e5d;
+            --border-highlight: #3b537d;
             
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -24,9 +21,9 @@
             --primary: #6366f1;
             --primary-hover: #4f46e5;
             --primary-glow: rgba(99, 102, 241, 0.25);
-
             
             --accent-cyan: #06b6d4;
+            --accent-violet: #8b5cf6;
             --accent-amber: #f59e0b;
             --accent-rose: #f43f5e;
             --accent-emerald: #10b981;
@@ -35,7 +32,7 @@
             --radius-md: 10px;
             --radius-sm: 6px;
             
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.15);
         }
 
@@ -63,7 +60,7 @@
             gap: 1.5rem;
         }
 
-        /* Header Bar */
+        /* Application Header */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -83,7 +80,7 @@
             gap: 0.85rem;
         }
 
-        .brand-icon {
+        .brand-logo {
             width: 44px;
             height: 44px;
             background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
@@ -98,10 +95,10 @@
         }
 
         .brand-title {
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             font-weight: 800;
             letter-spacing: -0.02em;
-            background: linear-gradient(to right, #ffffff, #a5b4fc);
+            background: linear-gradient(to right, #ffffff, #a5f3fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -123,7 +120,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(11, 17, 32, 0.7);
             padding: 0.5rem 0.85rem;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
@@ -131,27 +128,18 @@
             color: var(--text-muted);
         }
 
-        .header-setting input, .header-setting select {
+        .header-setting input {
             background: transparent;
             border: none;
             color: var(--accent-amber);
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             outline: none;
             cursor: pointer;
         }
 
-        .header-setting select {
-            color: var(--accent-cyan);
-        }
-
-        .header-setting select option {
-            background: var(--bg-surface);
-            color: var(--text-main);
-        }
-
         .current-clock {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--accent-cyan);
             font-family: monospace;
@@ -161,7 +149,7 @@
             border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
-        /* Budget Overview Banner */
+        /* Bedtime Budget Section */
         .budget-card {
             background: var(--bg-surface);
             border-radius: var(--radius-lg);
@@ -216,7 +204,7 @@
             color: var(--text-main);
         }
 
-        /* Progress Visualizer */
+        /* Visual Progress Bar */
         .progress-bar-container {
             width: 100%;
             height: 12px;
@@ -257,28 +245,40 @@
             border-radius: 50%;
         }
 
-        /* Warning Overrun Banner */
+        /* Bedtime Overrun Alert Banner */
         .overrun-alert {
             display: none;
             background: rgba(244, 63, 94, 0.12);
             border: 1px solid var(--accent-rose);
-            padding: 0.85rem 1.25rem;
+            padding: 1rem 1.25rem;
             border-radius: var(--radius-md);
             color: #fecdd3;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 0.85rem;
         }
 
         .overrun-alert.active {
             display: flex;
         }
 
-        /* Grid Layout */
+        .overrun-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .overrun-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        /* Main Grid Structure */
         .main-grid {
             display: grid;
-            grid-template-columns: 360px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 1.5rem;
         }
 
@@ -288,7 +288,7 @@
             }
         }
 
-        /* Panels */
+        /* Panel Styling */
         .panel {
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
@@ -310,7 +310,7 @@
             padding-bottom: 0.75rem;
         }
 
-        /* Forms & Inputs */
+        /* Form Controls */
         .form-group {
             display: flex;
             flex-direction: column;
@@ -341,18 +341,18 @@
             box-shadow: 0 0 0 2px var(--primary-glow);
         }
 
+        /* Dynamic Subject Dropdown */
         .dropdown-wrapper {
             position: relative;
             width: 100%;
         }
 
-        /* Auto-Save Subject Dropdown */
         .subject-dropdown {
             position: absolute;
             top: calc(100% + 4px);
             left: 0;
             right: 0;
-            background: #182238;
+            background: #19263e;
             border: 1px solid var(--border-highlight);
             border-radius: var(--radius-md);
             max-height: 220px;
@@ -384,9 +384,9 @@
         .dropdown-save-btn {
             padding: 0.7rem 0.85rem;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent-cyan);
-            background: rgba(6, 182, 212, 0.1);
+            background: rgba(6, 182, 212, 0.12);
             border-top: 1px solid var(--border-color);
             cursor: pointer;
             display: flex;
@@ -396,7 +396,7 @@
         }
 
         .dropdown-save-btn:hover {
-            background: rgba(6, 182, 212, 0.2);
+            background: rgba(6, 182, 212, 0.25);
         }
 
         .dropdown-empty {
@@ -406,12 +406,12 @@
             text-align: center;
         }
 
-        /* Commitment Item List */
+        /* Fixed Commitments List */
         .commitment-list {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
@@ -487,6 +487,17 @@
             background: #059669;
         }
 
+        .btn-amber {
+            background: var(--accent-amber);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .btn-amber:hover {
+            background: #d97706;
+            color: #fff;
+        }
+
         .btn-sm {
             padding: 0.35rem 0.65rem;
             font-size: 0.78rem;
@@ -514,6 +525,7 @@
             gap: 0.5rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -533,7 +545,7 @@
             color: white;
         }
 
-        /* Task Cards */
+        /* Task Cards Queue */
         .task-list {
             display: flex;
             flex-direction: column;
@@ -548,7 +560,6 @@
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
-            position: relative;
             transition: all 0.2s ease;
         }
 
@@ -557,8 +568,8 @@
         }
 
         .task-card.completed {
-            opacity: 0.6;
-            background: rgba(30, 40, 61, 0.5);
+            opacity: 0.65;
+            background: rgba(30, 44, 69, 0.4);
         }
 
         .task-card.completed .task-title {
@@ -593,8 +604,8 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.18);
+            color: #c7d2fe;
             width: fit-content;
         }
 
@@ -640,6 +651,18 @@
             padding-top: 0.6rem;
         }
 
+        /* Inline Time Adjustment inputs inside cards */
+        .inline-time-input {
+            width: 60px;
+            padding: 0.2rem 0.4rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -681,17 +704,17 @@
             border: 1px solid var(--border-highlight);
             border-radius: var(--radius-lg);
             width: 100%;
-            max-width: 520px;
+            max-width: 500px;
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            animation: modalSlideUp 0.25s ease-out;
+            animation: modalSlideUp 0.2s ease-out;
         }
 
         @keyframes modalSlideUp {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(15px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -737,13 +760,13 @@
 <body>
 
     <div class="app-container">
-        <!-- Application Header -->
+        <!-- 1. Header with FinishPronto Branding & Settings -->
         <header class="app-header">
             <div class="brand-section">
-                <div class="brand-icon">⚡</div>
+                <div class="brand-logo">⚡</div>
                 <div>
                     <h1 class="brand-title">FinishPronto</h1>
-                    <p class="brand-subtitle">Student-Athlete Evening & Homework Manager</p>
+                    <p class="brand-subtitle">Workload Planner</p>
                 </div>
             </div>
 
@@ -752,23 +775,15 @@
                     <span>🌙 Target Bedtime:</span>
                     <input type="time" id="bedtimeInput" value="23:00">
                 </div>
-                <div class="header-setting">
-                    <span>⏱️ Check-in Interval:</span>
-                    <select id="checkinIntervalSelect">
-                        <option value="15">Every 15 min</option>
-                        <option value="20" selected>Every 20 min</option>
-                        <option value="30">Every 30 min</option>
-                    </select>
-                </div>
                 <div class="current-clock" id="liveClock">00:00:00</div>
             </div>
         </header>
 
-        <!-- Dynamic Time Budget Banner -->
+        <!-- Evening Time Budget Overview Banner -->
         <section class="budget-card">
             <div class="budget-header">
                 <div class="budget-title">
-                    <span>📊 Night Budget & Bedtime Tracker</span>
+                    <span>📊 Evening Time Budget</span>
                 </div>
                 <div id="budgetStatusBadge" class="urgency-badge urgency-normal">On Track</div>
             </div>
@@ -783,16 +798,16 @@
                     <div class="metric-value" style="color: var(--accent-cyan);" id="metricFixedTime">0m</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-label">Required Workload</div>
+                    <div class="metric-label">Required Homework</div>
                     <div class="metric-value" style="color: var(--primary);" id="metricWorkload">0m</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-label">Available Free Buffer</div>
+                    <div class="metric-label">Available Buffer</div>
                     <div class="metric-value" id="metricBuffer">0m</div>
                 </div>
             </div>
 
-            <!-- Progress Bar Stack -->
+            <!-- Progress Bar Bar Stack -->
             <div class="progress-bar-container">
                 <div class="progress-segment segment-commitments" id="progCommitments" style="width: 0%;"></div>
                 <div class="progress-segment segment-workload" id="progWorkload" style="width: 0%;"></div>
@@ -803,7 +818,7 @@
             <div class="progress-legend">
                 <div class="legend-item">
                     <div class="legend-dot" style="background: var(--accent-cyan);"></div>
-                    <span>Fixed Commitments (Dinner, Shower, etc.)</span>
+                    <span>Fixed Commitments</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-dot" style="background: var(--primary);"></div>
@@ -815,36 +830,48 @@
                 </div>
             </div>
 
-            <!-- Warning Alert for Bedtime Overrun -->
+            <!-- Dynamic Bedtime Overrun Alert Banner -->
             <div class="overrun-alert" id="overrunBanner">
-                <div>
-                    <strong>⚠️ Bedtime Overrun Alert:</strong> Your total workload and fixed commitments exceed your target bedtime by <span id="overrunMinsText">0</span> minutes!
+                <div class="overrun-header">
+                    <div>
+                        <strong>⚠️ FinishPronto Bedtime Alert:</strong> Total tasks and commitments exceed your target bedtime by <span id="overrunMinsText">0</span> minutes!
+                    </div>
                 </div>
-                <button class="btn btn-rose btn-sm" id="btnResolveOverrun">⚡ Resolve Schedule Overrun</button>
+                <div class="overrun-actions">
+                    <button class="btn btn-rose btn-sm" onclick="deferLowestUrgencyTask()">
+                        📅 Push lowest-priority task to tomorrow
+                    </button>
+                    <button class="btn btn-amber btn-sm" onclick="openModal('extendBedtimeModal')">
+                        🌙 Extend target bedtime
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="scrollToTaskQueue()">
+                        ✏️ Adjust estimated task times
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Main Workspace Grid -->
+        <!-- 2. Main Grid: Left Entry Sidebar & Right Task Queue -->
         <main class="main-grid">
-            <!-- Left Sidebar Controls -->
             <div class="panel">
-                <!-- Add Homework Task Form (Positioned Above Fixed Commitments) -->
+                <!-- Homework Tasks Entry Form (PLACED ABOVE FIXED COMMITMENTS) -->
                 <div class="panel-title">
                     <span>📚 Add Homework Task</span>
                 </div>
 
                 <form id="taskForm" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <!-- Dynamic Subject/Class Dropdown -->
                     <div class="form-group">
-                        <label class="form-label" for="taskSubject">Class / Subject</label>
+                        <label class="form-label" for="taskSubject">Subject / Class</label>
                         <div class="dropdown-wrapper">
-                            <input type="text" id="taskSubject" class="input-field" placeholder="Type or select class..." autocomplete="off" required>
+                            <input type="text" id="taskSubject" class="input-field" placeholder="Type or select subject..." autocomplete="off" required>
                             <div id="subjectDropdown" class="subject-dropdown"></div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="taskName">Task Description</label>
-                        <input type="text" id="taskName" class="input-field" placeholder="e.g. Read Ch 4 & Answer #1-10" required>
+                        <input type="text" id="taskName" class="input-field" placeholder="e.g. Read Ch 5 & Complete Quiz" required>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
@@ -854,24 +881,34 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="taskDue">Due Date & Time</label>
-                            <input type="datetime-local" id="taskDue" class="input-field" required>
+                            <label class="form-label" for="taskCheckinInterval">Check-in Interval</label>
+                            <select id="taskCheckinInterval" class="input-field">
+                                <option value="10">Every 10 min</option>
+                                <option value="15">Every 15 min</option>
+                                <option value="20" selected>Every 20 min</option>
+                                <option value="30">Every 30 min</option>
+                            </select>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="taskDue">Deadline Date & Time</label>
+                        <input type="datetime-local" id="taskDue" class="input-field" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 0.25rem;">+ Add Homework Task</button>
                 </form>
 
-                <!-- Fixed Time Commitments (Positioned Below Homework Tasks) -->
+                <!-- Fixed Commitments Section (PLACED BELOW HOMEWORK TASKS, NO PRESET CHIPS) -->
                 <div class="panel-title" style="margin-top: 1rem;">
                     <span>🍽️ Fixed Commitments</span>
-                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-cyan);" id="totalCommitmentBadge">0 mins total</span>
+                    <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-cyan);" id="totalCommitmentBadge">0 mins</span>
                 </div>
 
                 <form id="commitmentForm" style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <div class="form-group">
                         <label class="form-label" for="commitTitle">Activity Name</label>
-                        <input type="text" id="commitTitle" class="input-field" placeholder="e.g. Dinner with family, Shower" required>
+                        <input type="text" id="commitTitle" class="input-field" placeholder="e.g. Dinner, Shower, Practice" required>
                     </div>
 
                     <div class="form-group">
@@ -882,15 +919,16 @@
                     <button type="submit" class="btn btn-secondary" style="margin-top: 0.25rem;">+ Add Fixed Commitment</button>
                 </form>
 
+                <!-- List of Custom Commitments -->
                 <div class="commitment-list" id="commitmentList">
-                    <!-- Rendered commitments -->
+                    <!-- Dynamic rendering -->
                 </div>
             </div>
 
-            <!-- Right Workspace: Task Queue & Active Focus -->
-            <div class="panel">
+            <!-- Right Workspace: Homework Queue sorted by Urgency -->
+            <div class="panel" id="taskQueuePanel">
                 <div class="panel-title">
-                    <span>🔥 Urgent Task Queue</span>
+                    <span>🔥 Homework Task Queue</span>
                     <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);" id="taskCountBadge">0 tasks</span>
                 </div>
 
@@ -902,17 +940,17 @@
                 </div>
 
                 <div class="task-list" id="taskList">
-                    <!-- Dynamic task cards -->
+                    <!-- Urgent sorted task cards -->
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- ACTIVE FOCUS SESSION MODAL -->
+    <!-- ACTIVE FOCUS MODE MODAL -->
     <div class="modal-overlay" id="focusModal">
         <div class="modal-card">
             <div class="modal-title">
-                <span style="color: var(--accent-cyan);">⚡ Active Focus Session</span>
+                <span style="color: var(--accent-cyan);">⚡ FinishPronto Focus Session</span>
             </div>
 
             <div class="focus-task-info">
@@ -924,7 +962,7 @@
             <div class="focus-timer-display" id="focusTimerDisplay">00:00</div>
 
             <div style="text-align: center; font-size: 0.85rem; color: var(--accent-amber);" id="focusCheckinCountdown">
-                ⏱️ Next interactive check-in in 20:00
+                ⏱️ Next check-in in 20:00
             </div>
 
             <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
@@ -935,70 +973,56 @@
         </div>
     </div>
 
-    <!-- INTERACTIVE CHECK-IN MODAL -->
+    <!-- INTERACTIVE CHECK-IN NOTIFICATION MODAL -->
     <div class="modal-overlay" id="checkinModal">
         <div class="modal-card">
             <div class="modal-title">
-                <span style="color: var(--accent-amber);">🔔 Check-In Prompt</span>
+                <span style="color: var(--accent-amber);">🔔 FinishPronto Focus Check-In</span>
             </div>
 
             <p style="font-size: 0.95rem; color: var(--text-main); text-align: center; line-height: 1.4;">
-                Are you still working on <strong id="checkinTaskName" style="color: var(--accent-cyan);">Task Name</strong>?
+                How is your progress on <strong id="checkinTaskName" style="color: var(--accent-cyan);">Task Name</strong>?
             </p>
 
             <div class="checkin-buttons">
-                <button class="btn btn-primary" onclick="respondCheckin('working')">💪 Still Working</button>
-                <button class="btn btn-emerald" onclick="respondCheckin('finished')">🎉 Finished Task!</button>
-                <button class="btn btn-secondary" onclick="respondCheckin('snooze')">⏰ Snooze 5 Mins</button>
-                <button class="btn btn-rose" onclick="respondCheckin('defer')">📅 Push to Tomorrow</button>
+                <button class="btn btn-primary" onclick="respondCheckin('working')">💪 I'm still working on it</button>
+                <button class="btn btn-emerald" onclick="respondCheckin('finished')">🎉 Finished early!</button>
+                <button class="btn btn-secondary" onclick="respondCheckin('snooze')">⏰ Snooze reminder (+5m)</button>
+                <button class="btn btn-rose" onclick="respondCheckin('defer')">📅 Push remaining to tomorrow</button>
             </div>
         </div>
     </div>
 
-    <!-- BEDTIME OVERRUN RESOLUTION MODAL -->
-    <div class="modal-overlay" id="overrunModal">
+    <!-- EXTEND BEDTIME MODAL -->
+    <div class="modal-overlay" id="extendBedtimeModal">
         <div class="modal-card">
             <div class="modal-title">
-                <span style="color: var(--accent-rose);">⚠️ Resolve Schedule Overrun</span>
+                <span style="color: var(--accent-amber);">🌙 Extend Target Bedtime</span>
             </div>
 
             <p style="font-size: 0.9rem; color: var(--text-muted);">
-                Your total estimated work + fixed commitments exceeds your 11:00 PM target bedtime. How would you like to adjust your evening schedule?
+                Select how much time you want to add to your target bedtime schedule:
             </p>
 
-            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
-                <div style="background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <strong style="font-size: 0.9rem; color: var(--text-main);">Option 1: Extend Target Bedtime</strong>
-                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(15)">+15 Mins</button>
-                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(30)">+30 Mins</button>
-                        <button class="btn btn-secondary btn-sm" onclick="extendBedtime(60)">+60 Mins</button>
-                    </div>
-                </div>
-
-                <div style="background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <strong style="font-size: 0.9rem; color: var(--text-main);">Option 2: Push Lowest Urgency Task to Tomorrow</strong>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.3rem 0 0.5rem 0;" id="lowestUrgencyTaskText">
-                        Lowest priority task will be marked as deferred.
-                    </p>
-                    <button class="btn btn-rose btn-sm" onclick="deferLowestUrgencyTask()">📅 Push Task to Tomorrow</button>
-                </div>
+            <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 0.5rem;">
+                <button class="btn btn-secondary" onclick="extendBedtime(15)">+15 Mins</button>
+                <button class="btn btn-secondary" onclick="extendBedtime(30)">+30 Mins</button>
+                <button class="btn btn-secondary" onclick="extendBedtime(60)">+60 Mins</button>
             </div>
 
-            <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="closeModal('overrunModal')">Close</button>
+            <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="closeModal('extendBedtimeModal')">Cancel</button>
         </div>
     </div>
 
-    <!-- APPLICATION LOGIC & PERSISTENCE -->
+    <!-- APPLICATION CODE & LOGIC -->
     <script>
-        /* Global App State */
+        /* Global State Object */
         let appState = {
             bedtime: "23:00",
-            checkinInterval: 20, // minutes
-            savedClasses: ["Math / AP Calc", "English Lit", "AP Physics", "US History", "Spanish III"],
+            savedClasses: ["Math", "English", "History", "Science"],
             commitments: [
-                { id: "c1", title: "Dinner with Family", minutes: 45 },
-                { id: "c2", title: "Shower & Wind Down", minutes: 20 }
+                { id: "c1", title: "Dinner", minutes: 45 },
+                { id: "c2", title: "Shower", minutes: 20 }
             ],
             tasks: [],
             activeFilter: "all",
@@ -1011,7 +1035,6 @@
 
         /* DOM Elements */
         const bedtimeInput = document.getElementById('bedtimeInput');
-        const checkinIntervalSelect = document.getElementById('checkinIntervalSelect');
         const liveClock = document.getElementById('liveClock');
         const taskSubjectInput = document.getElementById('taskSubject');
         const subjectDropdown = document.getElementById('subjectDropdown');
@@ -1021,7 +1044,7 @@
         const taskList = document.getElementById('taskList');
         const taskDueInput = document.getElementById('taskDue');
 
-        // Banner elements
+        // Banner Elements
         const metricTimeToBed = document.getElementById('metricTimeToBed');
         const metricFixedTime = document.getElementById('metricFixedTime');
         const metricWorkload = document.getElementById('metricWorkload');
@@ -1033,7 +1056,6 @@
         const progOverrun = document.getElementById('progOverrun');
         const overrunBanner = document.getElementById('overrunBanner');
         const overrunMinsText = document.getElementById('overrunMinsText');
-        const btnResolveOverrun = document.getElementById('btnResolveOverrun');
 
         /* Initialize App on Load */
         window.addEventListener('DOMContentLoaded', () => {
@@ -1044,56 +1066,55 @@
             renderAll();
         });
 
-        /* Load from LocalStorage */
+        /* LocalStorage Persistence */
         function loadLocalStorage() {
-            const saved = localStorage.getItem('finishpronto_state') || localStorage.getItem('getitdone_state');
+            const saved = localStorage.getItem('finishpronto_state');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     appState = { ...appState, ...parsed };
                 } catch (e) {
-                    console.error("Failed to parse local storage", e);
+                    console.error("Failed to parse storage", e);
                 }
             } else {
-                // Initial sample tasks
+                // Initial Sample Tasks
                 const todayStr = new Date().toISOString().split('T')[0];
                 appState.tasks = [
                     {
                         id: 't1',
-                        subject: 'Math / AP Calc',
-                        name: 'Problem Set #8 (Derivatives)',
-                        duration: 45,
+                        subject: 'Math',
+                        name: 'Problem Set #7 - Equations',
+                        duration: 40,
+                        checkinInterval: 20,
                         due: `${todayStr}T21:30`,
                         status: 'pending'
                     },
                     {
                         id: 't2',
-                        subject: 'AP Physics',
-                        name: 'Lab Report Analysis & Graphs',
-                        duration: 60,
-                        due: `${todayStr}T22:00`,
+                        subject: 'Science',
+                        name: 'Lab Report Questions',
+                        duration: 50,
+                        checkinInterval: 20,
+                        due: `${todayStr}T22:15`,
                         status: 'pending'
                     }
                 ];
                 saveLocalStorage();
             }
 
-            // Sync UI Inputs
             bedtimeInput.value = appState.bedtime || "23:00";
-            checkinIntervalSelect.value = appState.checkinInterval || 20;
         }
 
         function saveLocalStorage() {
             localStorage.setItem('finishpronto_state', JSON.stringify({
                 bedtime: appState.bedtime,
-                checkinInterval: appState.checkinInterval,
                 savedClasses: appState.savedClasses,
                 commitments: appState.commitments,
                 tasks: appState.tasks
             }));
         }
 
-        /* Set Default Due Date (Today at 10 PM) */
+        /* Default Deadline (10:00 PM Tonight) */
         function setDefaultDueDate() {
             const now = new Date();
             now.setHours(22, 0, 0, 0);
@@ -1101,7 +1122,7 @@
             taskDueInput.value = iso;
         }
 
-        /* Live Clock Display */
+        /* Live Clock & Budget Tick */
         function startLiveClock() {
             function updateClock() {
                 const now = new Date();
@@ -1112,31 +1133,25 @@
             setInterval(updateClock, 1000);
         }
 
-        /* Setup Main Event Listeners */
+        /* Event Listeners Setup */
         function setupEventListeners() {
-            // Bedtime and Check-in Interval changes
             bedtimeInput.addEventListener('change', (e) => {
                 appState.bedtime = e.target.value;
                 saveLocalStorage();
                 renderAll();
             });
 
-            checkinIntervalSelect.addEventListener('change', (e) => {
-                appState.checkinInterval = parseInt(e.target.value);
-                saveLocalStorage();
-            });
-
-            // Dynamic Subject Auto-Save Dropdown listeners
+            // Dynamic Subject Dropdown
             taskSubjectInput.addEventListener('focus', renderSubjectDropdown);
             taskSubjectInput.addEventListener('input', renderSubjectDropdown);
-            
+
             document.addEventListener('click', (e) => {
                 if (!taskSubjectInput.contains(e.target) && !subjectDropdown.contains(e.target)) {
                     subjectDropdown.classList.remove('open');
                 }
             });
 
-            // Add Fixed Commitment
+            // Add Fixed Commitment Form Submit
             commitmentForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const title = document.getElementById('commitTitle').value.trim();
@@ -1154,16 +1169,17 @@
                 }
             });
 
-            // Add Homework Task
+            // Add Homework Task Form Submit
             taskForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const subject = taskSubjectInput.value.trim();
                 const name = document.getElementById('taskName').value.trim();
                 const duration = parseInt(document.getElementById('taskDuration').value);
+                const checkinInterval = parseInt(document.getElementById('taskCheckinInterval').value);
                 const due = taskDueInput.value;
 
                 if (subject && name && duration > 0 && due) {
-                    // Auto save class if not saved yet
+                    // Save class if new
                     if (!appState.savedClasses.some(c => c.toLowerCase() === subject.toLowerCase())) {
                         appState.savedClasses.push(subject);
                     }
@@ -1173,6 +1189,7 @@
                         subject,
                         name,
                         duration,
+                        checkinInterval,
                         due,
                         status: 'pending'
                     });
@@ -1185,13 +1202,9 @@
                     renderAll();
                 }
             });
-
-            btnResolveOverrun.addEventListener('click', () => {
-                openModal('overrunModal');
-            });
         }
 
-        /* Render Subject Dropdown with + Save Button */
+        /* Subject / Class Dynamic Dropdown Logic */
         function renderSubjectDropdown() {
             const inputVal = taskSubjectInput.value.trim();
             const filter = inputVal.toLowerCase();
@@ -1209,7 +1222,7 @@
                 });
             }
 
-            // At the bottom of the dropdown list, include option: + Save "<current typed class name>"
+            // Always show "+ Save '[Typed Class Name]'" option if typed and not exact match
             if (inputVal && !appState.savedClasses.some(c => c.toLowerCase() === filter)) {
                 html += `
                     <div class="dropdown-save-btn" onclick="saveAndSelectClass('${escapeHtml(inputVal)}')">
@@ -1249,14 +1262,13 @@
             renderAll();
         }
 
-        /* Calculation & Time Budget Math */
+        /* Dynamic Bedtime Overrun Calculation */
         function calculateTimeBudget() {
             const now = new Date();
             const [bedHour, bedMin] = appState.bedtime.split(':').map(Number);
             let targetBed = new Date();
             targetBed.setHours(bedHour, bedMin, 0, 0);
 
-            // If target bedtime is earlier in the day than now (e.g., bedtime 00:30 past midnight), add 1 day
             if (targetBed < now && bedHour < 6) {
                 targetBed.setDate(targetBed.getDate() + 1);
             }
@@ -1264,7 +1276,6 @@
             const totalMinsToBed = Math.max(0, Math.floor((targetBed - now) / 60000));
             const totalFixedMins = appState.commitments.reduce((sum, c) => sum + c.minutes, 0);
             
-            // Required workload (sum of pending task durations)
             const pendingTasks = appState.tasks.filter(t => t.status === 'pending');
             const totalWorkloadMins = pendingTasks.reduce((sum, t) => sum + t.duration, 0);
 
@@ -1279,7 +1290,7 @@
             metricFixedTime.textContent = `${totalFixedMins}m`;
             metricWorkload.textContent = `${totalWorkloadMins}m`;
 
-            // Progress bar visual updates
+            // Progress Bar Visual Segment Calculation
             const baseTotal = Math.max(totalMinsToBed, totalFixedMins + totalWorkloadMins, 1);
             const pctCommit = Math.min(100, (totalFixedMins / baseTotal) * 100);
             const pctWorkload = Math.min(100 - pctCommit, (totalWorkloadMins / baseTotal) * 100);
@@ -1306,22 +1317,15 @@
                 metricBuffer.textContent = `-${overrunMins}m Over`;
                 metricBuffer.style.color = 'var(--accent-rose)';
 
-                budgetStatusBadge.textContent = 'Over Bedtime';
+                budgetStatusBadge.textContent = 'Bedtime Breach';
                 budgetStatusBadge.className = 'urgency-badge urgency-urgent';
                 
                 overrunMinsText.textContent = overrunMins;
                 overrunBanner.classList.add('active');
-
-                // Update text for lowest urgency task deferral option
-                const lowestTask = getLowestUrgencyTask();
-                const lowestText = document.getElementById('lowestUrgencyTaskText');
-                if (lowestTask && lowestText) {
-                    lowestText.textContent = `Lowest urgency task: "${lowestTask.name}" (${lowestTask.duration}m).`;
-                }
             }
         }
 
-        /* Sorting Tasks by Urgency (Earliest Deadline First) */
+        /* Homework Urgency Sorting (Earliest Deadline First) */
         function getSortedTasks() {
             return [...appState.tasks].sort((a, b) => {
                 const dueA = new Date(a.due).getTime();
@@ -1333,11 +1337,10 @@
         function getLowestUrgencyTask() {
             const pending = appState.tasks.filter(t => t.status === 'pending');
             if (pending.length === 0) return null;
-            // Sort descending by due date (latest deadline = lowest urgency)
             return pending.sort((a, b) => new Date(b.due).getTime() - new Date(a.due).getTime())[0];
         }
 
-        /* Task Filtering */
+        /* Filter Tab Switch */
         function setTaskFilter(filter, el) {
             appState.activeFilter = filter;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1345,7 +1348,7 @@
             renderTasks();
         }
 
-        /* Render All Components */
+        /* Render UI Components */
         function renderAll() {
             renderCommitments();
             renderTasks();
@@ -1354,10 +1357,10 @@
 
         function renderCommitments() {
             const totalMins = appState.commitments.reduce((sum, c) => sum + c.minutes, 0);
-            document.getElementById('totalCommitmentBadge').textContent = `${totalMins} mins total`;
+            document.getElementById('totalCommitmentBadge').textContent = `${totalMins} mins`;
 
             if (appState.commitments.length === 0) {
-                commitmentList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem;">No fixed commitments added.</p></div>`;
+                commitmentList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem;">No fixed commitments added yet.</p></div>`;
                 return;
             }
 
@@ -1390,8 +1393,8 @@
                 taskList.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🎉</div>
-                        <p style="font-weight: 600;">No homework tasks in this view!</p>
-                        <p style="font-size: 0.8rem;">Add a new task using the form on the left.</p>
+                        <p style="font-weight: 600;">No tasks in this list!</p>
+                        <p style="font-size: 0.8rem;">Add a homework task on the left panel.</p>
                     </div>`;
                 return;
             }
@@ -1400,7 +1403,6 @@
                 const dueObj = new Date(task.due);
                 const formattedDue = dueObj.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                 
-                // Urgency tag math
                 const hoursLeft = (dueObj.getTime() - new Date().getTime()) / 3600000;
                 let urgencyBadge = '<span class="urgency-badge urgency-normal">🟢 Normal</span>';
                 if (hoursLeft <= 4) {
@@ -1423,7 +1425,13 @@
                         </div>
 
                         <div class="task-meta">
-                            <div class="task-meta-item">⏱️ Est: <strong>${task.duration} mins</strong></div>
+                            <div class="task-meta-item">
+                                ⏱️ Est: 
+                                <input type="number" class="inline-time-input" value="${task.duration}" min="5" max="360" 
+                                    onchange="updateTaskDuration('${task.id}', this.value)" title="Adjust estimated time">
+                                <span>mins</span>
+                            </div>
+                            <div class="task-meta-item">🔔 Check-in: <strong>${task.checkinInterval || 20}m</strong></div>
                             <div class="task-meta-item">📅 Due: <strong>${formattedDue}</strong></div>
                             ${isDeferred ? '<div class="task-meta-item" style="color: var(--accent-amber);">Pushed to Tomorrow</div>' : ''}
                         </div>
@@ -1431,7 +1439,7 @@
                         <div class="task-actions">
                             ${!isCompleted ? `
                                 <button class="btn btn-primary btn-sm" onclick="startFocusSession('${task.id}')">
-                                    ▶ I'm working on it
+                                    ▶ Start Working
                                 </button>
                                 <button class="btn btn-emerald btn-sm" onclick="toggleTaskDone('${task.id}')">
                                     ✓ Mark Done
@@ -1448,7 +1456,19 @@
             }).join('');
         }
 
-        /* Task Action Handlers */
+        /* Task Actions */
+        function updateTaskDuration(id, newMins) {
+            const mins = parseInt(newMins);
+            if (mins && mins > 0) {
+                const task = appState.tasks.find(t => t.id === id);
+                if (task) {
+                    task.duration = mins;
+                    saveLocalStorage();
+                    calculateTimeBudget();
+                }
+            }
+        }
+
         function toggleTaskDone(id) {
             const task = appState.tasks.find(t => t.id === id);
             if (task) {
@@ -1464,14 +1484,14 @@
             renderAll();
         }
 
-        /* FOCUS SESSION & INTERACTIVE CHECK-INS */
+        /* FOCUS MODE & INTERACTIVE NOTIFICATION CHECK-INS */
         function startFocusSession(taskId) {
             const task = appState.tasks.find(t => t.id === taskId);
             if (!task) return;
 
             appState.activeFocusTaskId = taskId;
             appState.focusTimerSeconds = task.duration * 60;
-            appState.checkinTimerSeconds = appState.checkinInterval * 60;
+            appState.checkinTimerSeconds = (task.checkinInterval || 20) * 60;
             appState.isTimerPaused = false;
 
             document.getElementById('focusSubjectBadge').textContent = `📚 ${task.subject}`;
@@ -1497,10 +1517,11 @@
             if (appState.checkinTimerSeconds > 0) {
                 appState.checkinTimerSeconds--;
             } else {
-                // Check-in interval reached! Play audio chime & open modal
+                // Interactive Check-in Trigger
                 playChimeSound();
                 triggerCheckinPrompt();
-                appState.checkinTimerSeconds = appState.checkinInterval * 60; // reset
+                const task = appState.tasks.find(t => t.id === appState.activeFocusTaskId);
+                appState.checkinTimerSeconds = (task ? task.checkinInterval : 20) * 60;
             }
 
             updateFocusTimerDisplay();
@@ -1515,7 +1536,7 @@
             const cm = Math.floor(appState.checkinTimerSeconds / 60);
             const cs = appState.checkinTimerSeconds % 60;
             document.getElementById('focusCheckinCountdown').textContent = 
-                `⏱️ Next interactive check-in in ${String(cm).padStart(2, '0')}:${String(cs).padStart(2, '0')}`;
+                `⏱️ Next check-in in ${String(cm).padStart(2, '0')}:${String(cs).padStart(2, '0')}`;
         }
 
         function togglePauseFocus() {
@@ -1538,7 +1559,6 @@
             renderAll();
         }
 
-        /* Check-in Trigger & Response */
         function triggerCheckinPrompt() {
             const task = appState.tasks.find(t => t.id === appState.activeFocusTaskId);
             if (task) {
@@ -1548,17 +1568,17 @@
             openModal('checkinModal');
         }
 
+        /* Check-In Modal Response Options */
         function respondCheckin(action) {
             closeModal('checkinModal');
             
             if (action === 'working') {
                 appState.isTimerPaused = false;
-                appState.checkinTimerSeconds = appState.checkinInterval * 60;
             } else if (action === 'finished') {
                 completeFocusTask();
             } else if (action === 'snooze') {
                 appState.isTimerPaused = false;
-                appState.checkinTimerSeconds = 5 * 60; // 5 mins snooze
+                appState.checkinTimerSeconds = 5 * 60; // Snooze 5 mins
             } else if (action === 'defer') {
                 if (appState.activeFocusTaskId) {
                     const task = appState.tasks.find(t => t.id === appState.activeFocusTaskId);
@@ -1569,7 +1589,16 @@
             }
         }
 
-        /* Bedtime Overrun Resolution Actions */
+        /* Bedtime Overrun Decisions */
+        function deferLowestUrgencyTask() {
+            const lowest = getLowestUrgencyTask();
+            if (lowest) {
+                lowest.status = 'deferred';
+                saveLocalStorage();
+                renderAll();
+            }
+        }
+
         function extendBedtime(extraMins) {
             const [h, m] = appState.bedtime.split(':').map(Number);
             let date = new Date();
@@ -1580,21 +1609,15 @@
             appState.bedtime = `${newH}:${newM}`;
             bedtimeInput.value = appState.bedtime;
             saveLocalStorage();
-            closeModal('overrunModal');
+            closeModal('extendBedtimeModal');
             renderAll();
         }
 
-        function deferLowestUrgencyTask() {
-            const lowest = getLowestUrgencyTask();
-            if (lowest) {
-                lowest.status = 'deferred';
-                saveLocalStorage();
-                renderAll();
-            }
-            closeModal('overrunModal');
+        function scrollToTaskQueue() {
+            document.getElementById('taskQueuePanel').scrollIntoView({ behavior: 'smooth' });
         }
 
-        /* Web Audio API Synthesized Chime */
+        /* Web Audio API Sound Chime (Zero External Dependencies) */
         function playChimeSound() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1604,8 +1627,8 @@
                 const gain = ctx.createGain();
 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.18); // G5
 
                 gain.gain.setValueAtTime(0.3, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
@@ -1620,7 +1643,7 @@
             }
         }
 
-        /* Modal Helpers */
+        /* Modal Visibility Helpers */
         function openModal(id) {
             document.getElementById(id).classList.add('open');
         }
